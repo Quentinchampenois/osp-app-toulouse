@@ -9,6 +9,10 @@ $(() => {
     const $mandatoryFormFirstStepFields = $formFirstStepFields.not("#registration_user_newsletter").not("input[type ='hidden']").add($tosAgreement);
     const $userPassword = $("#registration_user_password");
     const $userPasswordConfirmation = $("#registration_user_password_confirmation");
+    const $userLivingArea = $("#registration_user_living_area");
+    const $cityLivingArea = $(".city_living_area");
+    const $metropolisLivingArea = $(".metropolis_living_area");
+    const $railsValidationAsterisk = $("[for=\"registration_user_living_area\"]").children("span.label-required").clone()
 
     const $underageSelector = $("#registration_underage_registration");
     const $statutoryRepresentativeEmailSelector = $("#statutory_representative_email");
@@ -26,10 +30,32 @@ $(() => {
     }
 
     $underageSelector.on("click", () => {
-        console.log($statutoryRepresentativeEmailSelector)
         emailSelectorToggle();
     });
 
+    const userLivingAreaToggle = () => {
+        addValidationAsterisk($userLivingArea.val())
+
+        if ($userLivingArea.val() === "city") {
+            $cityLivingArea.show();
+            $metropolisLivingArea.hide();
+        } else if ($userLivingArea.val() === "metropolis") {
+            $cityLivingArea.hide();
+            $metropolisLivingArea.show();
+        } else {
+            $cityLivingArea.hide();
+            $metropolisLivingArea.hide();
+        }
+    };
+
+    // Clone rails validator asterisk and add before the selector
+    const addValidationAsterisk = (selector) => {
+        const $element = $(`#registration_user_${selector}_residential_area`);
+
+        if ( $element.length && $element.parent().children("span.label-required").length <= 0) {
+            $element.before($railsValidationAsterisk);
+        }
+    }
     const setGroupFieldsVisibility = (value) => {
         if (value === "user") {
             $userGroupFields.hide();
@@ -49,6 +75,7 @@ $(() => {
         }, 200);
     };
 
+    userLivingAreaToggle();
     setGroupFieldsVisibility($userRegistrationForm.find(`${inputSelector}:checked`).val());
 
     $userRegistrationForm.on("change", inputSelector, (event) => {
@@ -117,6 +144,8 @@ $(() => {
         checkMandatoryFormField().each((index, element) => {
             displayError(element);
         });
+
+        userLivingAreaToggle();
 
         $formStepForwardButton.attr("disabled", (checkMandatoryFormField().length > 0));
     });

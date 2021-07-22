@@ -8,6 +8,28 @@ module Decidim
       describe "call" do
         let(:organization) { create(:organization) }
 
+        let(:city_parent_scope) do
+          create(:scope,
+                 name: {
+                   fr: "Ville de Toulouse",
+                   en: "Toulouse city"
+                 },
+                 organization: organization)
+        end
+        let(:metropolis_parent_scope) do
+          create(:scope,
+                 name: {
+                   fr: "Métropole de Toulouse",
+                   en: "Toulouse metropolis"
+                 },
+                 organization: organization)
+        end
+
+        let(:city_residential_scope) { create(:scope, parent: city_parent_scope) }
+        let(:city_work_scope) { create(:scope, parent: city_parent_scope) }
+        let(:metropolis_residential_scope) { create(:scope, parent: metropolis_parent_scope) }
+        let(:metropolis_work_scope) { create(:scope, parent: metropolis_parent_scope) }
+
         let(:name) { "Username" }
         let(:nickname) { "nickname" }
         let(:email) { "user@example.org" }
@@ -18,8 +40,11 @@ module Decidim
         let(:newsletter) { "1" }
         let(:current_locale) { "es" }
 
-        let(:residential_area) { create(:scope, organization: organization).id.to_s }
-        let(:work_area) { create(:scope, organization: organization).id.to_s }
+        let(:living_area) { "city" }
+        let(:city_residential_area) { city_residential_scope.id.to_s }
+        let(:city_work_area) { city_work_scope.id.to_s }
+        let(:metropolis_residential_area) { nil }
+        let(:metropolis_work_area) { nil }
         let(:gender) { "other" }
         let(:birth_date) do
           {
@@ -33,8 +58,11 @@ module Decidim
         let(:registration_metadata) do
           {
             additional_tos: additional_tos,
-            residential_area: residential_area,
-            work_area: work_area,
+            living_area: living_area,
+            city_residential_area: city_residential_area,
+            city_work_area: city_work_area,
+            metropolis_residential_area: metropolis_residential_area,
+            metropolis_work_area: metropolis_work_area,
             gender: gender,
             birth_date: birth_date,
             statutory_representative_email: statutory_representative_email
@@ -52,8 +80,11 @@ module Decidim
               "tos_agreement" => tos_agreement,
               "additional_tos" => additional_tos,
               "newsletter_at" => newsletter,
-              "residential_area" => residential_area,
-              "work_area" => work_area,
+              "living_area" => living_area,
+              "city_residential_area" => city_residential_area,
+              "city_work_area" => city_work_area,
+              "metropolis_residential_area" => metropolis_residential_area,
+              "metropolis_work_area" => metropolis_work_area,
               "gender" => gender,
               "birth_date" => birth_date,
               "underage" => underage,
@@ -155,6 +186,44 @@ module Decidim
                   perform_enqueued_jobs { command.call }
                 end.not_to change(emails, :count)
               end
+            end
+          end
+
+          describe "when living area is city" do
+            it "saves city attributes" do
+              expect do
+                command.call
+                expect(User.last.registration_metadata[:metropolis_residential_area]).to eq(nil)
+                expect(User.last.registration_metadata[:metropolis_work_area]).to eq(nil)
+              end.to change(User, :count).by(1)
+            end
+          end
+
+          describe "when living area is metropolis" do
+            let(:living_area) { "metropolis" }
+            let(:metropolis_residential_area) { metropolis_residential_scope.id.to_s }
+            let(:metropolis_work_area) { metropolis_work_scope.id.to_s }
+
+            it "saves city attributes" do
+              expect do
+                command.call
+                expect(User.last.registration_metadata[:city_residential_area]).to eq(nil)
+                expect(User.last.registration_metadata[:city_work_area]).to eq(nil)
+              end.to change(User, :count).by(1)
+            end
+          end
+
+          describe "when living area is other" do
+            let(:living_area) { "other" }
+
+            it "doesn't saves city and metropolis attributes" do
+              expect do
+                command.call
+                expect(User.last.registration_metadata[:city_residential_area]).to eq(nil)
+                expect(User.last.registration_metadata[:city_work_area]).to eq(nil)
+                expect(User.last.registration_metadata[:metropolis_residential_area]).to eq(nil)
+                expect(User.last.registration_metadata[:metropolis_work_area]).to eq(nil)
+              end.to change(User, :count).by(1)
             end
           end
         end

@@ -11,6 +11,12 @@ module Decidim
     # own serializer or this default will be used.
     class Serializer
       attr_reader :resource
+      EXPORTABLE_LIVING_AREA = [
+        :city_work_area,
+        :metropolis_work_area,
+        :city_residential_area,
+        :metropolis_residential_area
+      ].freeze
 
       # Initializes the serializer with a resource.
       #
@@ -58,9 +64,7 @@ module Decidim
         registration_metadata = user.try(:registration_metadata)
         return "" if registration_metadata.nil?
 
-        if sym_target == :work_area
-          scope_area_name(registration_metadata[sym_target.to_s])
-        elsif sym_target == :residential_area
+        if EXPORTABLE_LIVING_AREA.include? sym_target
           scope_area_name(registration_metadata[sym_target.to_s])
         else
           registration_metadata[sym_target.to_s] || ""

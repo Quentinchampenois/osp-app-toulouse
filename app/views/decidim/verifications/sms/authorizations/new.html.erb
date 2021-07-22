@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <div class="row collapse">
+    <div class="row collapse">
+      <div class="columns large-8 large-centered text-center page-title">
+        <h1><%= t(".title") %></h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns large-6 medium-centered">
+        <div class="card">
+          <div class="card__content">
+            <%= decidim_form_for(@form, url: authorization_path(redirect_url: redirect_url)) do |form| %>
+              <%= form_required_explanation %>
+
+              <div class="field">
+                <p><%= t(".instructions") %></p>
+                <%= form.text_field :mobile_phone_number, label: t(".mobile_phone_number") %>
+                <ul class="instructions_helper"><%== t(".instructions_helper") %></ul>
+              </div>
+
+              <div class="actions">
+                <%= form.submit t(".send"), class: "button expanded", "data-disable-with" => "#{t('.send')}..." %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

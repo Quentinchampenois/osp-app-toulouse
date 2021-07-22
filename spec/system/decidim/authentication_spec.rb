@@ -12,8 +12,9 @@ def fill_registration_fields
 
   fill_in :registration_user_name, with: "Responsible Citizen"
   fill_in :registration_user_nickname, with: "responsible"
-  select translated(scopes.first.name), from: :registration_user_residential_area
-  select translated(scopes.first.name), from: :registration_user_work_area
+  select "City", from: :registration_user_living_area
+  select translated(city_residential_area.name), from: :registration_user_city_residential_area
+  select translated(city_work_area.name), from: :registration_user_city_work_area
   select "Other", from: :registration_user_gender
   select "September", from: :registration_user_month
   select "1992", from: :registration_user_year
@@ -25,6 +26,26 @@ describe "Authentication", type: :system do
   let!(:scopes) { create_list(:scope, 5, organization: organization) }
   let(:organization) { create(:organization) }
   let(:last_user) { Decidim::User.last }
+
+  let!(:city_parent_scope) do
+    create(:scope,
+           name: {
+             fr: "Ville de Toulouse",
+             en: "Toulouse city"
+           },
+           organization: organization)
+  end
+  let!(:metropolis_parent_scope) do
+    create(:scope,
+           name: {
+             fr: "Métropole de Toulouse",
+             en: "Toulouse metropolis"
+           },
+           organization: organization)
+  end
+
+  let!(:city_residential_area) { create(:scope, parent: city_parent_scope) }
+  let!(:city_work_area) { create(:scope, parent: city_parent_scope) }
 
   before do
     switch_to_host(organization.host)
@@ -531,8 +552,9 @@ describe "Authentication", type: :system do
 
             fill_in :registration_user_name, with: "Responsible Citizen"
             fill_in :registration_user_nickname, with: "responsible"
-            select translated(scopes.first.name), from: :registration_user_residential_area
-            select translated(scopes.first.name), from: :registration_user_work_area
+            select "City", from: :registration_user_living_area
+            select translated(city_residential_area.name), from: :registration_user_city_residential_area
+            select translated(city_work_area.name), from: :registration_user_city_work_area
             select "Other", from: :registration_user_gender
             select "September", from: :registration_user_month
             select "1992", from: :registration_user_year

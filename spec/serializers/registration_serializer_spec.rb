@@ -9,15 +9,15 @@ module Decidim
         let!(:subject) { described_class.new(registration) }
         let!(:registration) { create(:registration) }
         let(:user) { registration.user }
-        let(:work_area) { create(:scope, organization: user.organization) }
-        let(:residential_area) { create(:scope, organization: user.organization) }
+        let(:city_work_area) { create(:scope, organization: user.organization) }
+        let(:city_residential_area) { create(:scope, organization: user.organization) }
         let!(:user_group) { create(:user_group, :verified, organization: user.organization, users: [user]) }
         let(:registration_metadata) do
           {
             birth_date: "1981",
             gender: "Female",
-            work_area: work_area.id,
-            residential_area: residential_area.id,
+            city_work_area: city_work_area.id,
+            city_residential_area: city_residential_area.id,
             statutory_representative_email: "statutory_representative_email@example.org"
           }
         end
@@ -41,8 +41,8 @@ module Decidim
             expect(subject.serialize["User"]).to include("Email" => user.email)
             expect(subject.serialize["User"]).to include("Birth date" => registration_metadata[:birth_date])
             expect(subject.serialize["User"]).to include("Gender" => registration_metadata[:gender])
-            expect(subject.serialize["User"]).to include("Work area" => translated(work_area.name))
-            expect(subject.serialize["User"]).to include("Residential area" => translated(residential_area.name))
+            expect(subject.serialize["User"]).to include("Work area" => translated(city_work_area.name))
+            expect(subject.serialize["User"]).to include("Residential area" => translated(city_residential_area.name))
             expect(subject.serialize["User"]).to include("Statutory representative email" => registration_metadata[:statutory_representative_email])
             expect(subject.serialize["User"]).to include("User group" => user_group&.name)
           end

@@ -16,8 +16,8 @@ module Decidim
             t_column_name(:email, ".user") => resource.user.try(:email),
             t_column_name(:birth_date, ".user") => key_from_registration_metadata(resource.user, :birth_date).to_s,
             t_column_name(:gender, ".user") => key_from_registration_metadata(resource.user, :gender),
-            t_column_name(:work_area, ".user") => key_from_registration_metadata(resource.user, :work_area),
-            t_column_name(:residential_area, ".user") => key_from_registration_metadata(resource.user, :residential_area),
+            t_column_name(:city_work_area, ".user") => key_from_registration_metadata(resource.user, :city_work_area),
+            t_column_name(:city_residential_area, ".user") => key_from_registration_metadata(resource.user, :city_residential_area),
             t_column_name(:statutory_representative_email, ".user") => key_from_registration_metadata(resource.user, :statutory_representative_email),
             t_column_name(:user_group, ".user") => resource.user_group&.name || ""
           },

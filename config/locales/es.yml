@@ -25,12 +25,12 @@ es:
             author:
               author: Author
               birth_date: Birth date
+              city_residential_area: Residential area
+              city_work_area: Work area
               gender: Gender
               id: ID
               name: Name
-              residential_area: Residential area
               statutory_representative_email: Statutory representative email
-              work_area: Work area
             body: Content
             commentable_id: Commentable ID
             commentable_type: Commentable type
@@ -69,16 +69,16 @@ es:
               url: Url
               user:
                 birth_date: Birth date
+                city_residential_area: Residential area
+                city_work_area: Work area
                 email: Email
                 gender: Gender
                 name: Name
                 nickname: Nickname
                 registration_form_answers: Registration form answers
-                residential_area: Residential area
                 statutory_representative_email: Statutory representative email
                 user: User
                 user_group: User group
-                work_area: Work area
     devise:
       registrations:
         new:
@@ -87,6 +87,9 @@ es:
           already_have_an_account?: Already have an account?
           back: Back
           birth_date: Birth date
+          city: City
+          city_residential_area: Residential area
+          city_work_area: Work area
           complete_profile: Complete profile
           complete_sign_up: Plus que quelques questions...
           complete_sign_up_subtitle: Remplissez ces quelques champs pour finaliser la création de votre compte.
@@ -98,6 +101,10 @@ es:
             male: Male
             other: Other
           gender_label: Gender label
+          living_area: Living area
+          metropolis: Metropolis
+          metropolis_residential_area: Metropolis residential area
+          metropolis_work_area: Metropolis work area
           month_label: Month label
           month_name:
             april: April
@@ -115,8 +122,8 @@ es:
           newsletter: Newsletter
           newsletter_title: Newsletter title
           nickname_help: Nickname help
+          other: Other
           password_help: Password help
-          residential_area: Residential area
           sign_in: Sign in
           sign_up: Sign up
           sign_up_as:
@@ -128,7 +135,6 @@ es:
           tos_title: Terms of Service
           underage: Underage
           username_help: Username help
-          work_area: Work area
           year_label: Year label
       shared:
         omniauth_buttons:
@@ -141,14 +147,17 @@ es:
         registered: Registered
         unregistered: Unregistered
         user_birth_date: Birth date
+        user_city_residential_area: Residential area
+        user_city_work_area: Work area
         user_email: Email
         user_gender: Gender
+        user_living_area: Living area
+        user_metropolis_residential_area: Residential area
+        user_metropolis_work_area: Work area
         user_name: Username
         user_nickname: Nickname
-        user_residential_area: Residential area
         user_status: User status
         user_statutory_representative_email: Statutory representative email
-        user_work_area: Work area
     meetings:
       admin:
         exports:
@@ -158,16 +167,16 @@ es:
               id: ID
               user:
                 birth_date: Birth date
+                city_residential_area: Residential area
+                city_work_area: Work area
                 email: Email
                 gender: Gender
                 name: Name
                 nickname: Nickname
                 registration_form_answers: Registration form answers
-                residential_area: Residential area
                 statutory_representative_email: Statutory representative email
                 user: User
                 user_group: User group
-                work_area: Work area
     participatory_processes:
       admin:
         participatory_processes:
@@ -199,6 +208,8 @@ es:
     proposals:
       admin:
         exports:
+          city_residential_area: Residential area
+          city_work_area: Work area
           column_name:
             proposals:
               amendments: Amendments
@@ -208,13 +219,13 @@ es:
               authors:
                 authors: Authors
                 birth_date: Birth date
+                city_residential_area: Residential area
+                city_work_area: Work area
                 emails: Emails
                 gender: Gender
                 names: Names
                 nicknames: Nicknames
-                residential_area: Residential area
                 statutory_representative_email: Statutory representative email
-                work_area: Work area
               body: Content
               category:
                 category: Category
@@ -248,7 +259,6 @@ es:
           newsletter_title: Newsletter title
           nickname_help: Nickname help
           password_help: Password help
-          residential_area: Residential area
           sign_in: Sign in
           sign_up: Sign up
           sign_up_as:
@@ -261,7 +271,6 @@ es:
           tos_title: Terms of Service
           underage: Underage
           username_help: Username help
-          work_area: Work area
           year_label: Year label
     statutory_representative:
       inform:
@@ -277,6 +286,14 @@ es:
         select_your_interests: Select your interests
         skip: Skip this step
         welcome: Welcome
+    verifications:
+      sms:
+        authorizations:
+          new:
+            instructions: Enter your phone number and the verification code sent by SMS. This method allows us to ensure that you have voted only once.
+            instructions_helper: "<ul><li>Must contain only numbers</li><li>Must start with 0</li><li>Must contain 10 digits</li><li>Must not be used by another account on this platform</li></ul>"
+            send: Send
+            title: Verify your identity with the SMS verification method
   devise:
     failure:
       invited: You have a pending invitation, accept it to finish creating your account
@@ -315,3 +332,5 @@ es:
         account: Account
         conversations: Conversations
         notifications: Notifications
+  sms_verification_workflow:
+    message: 'Hola, aquí está el código para autenticarse en la plataforma jeparticipe.toulouse.fr: %{code}'

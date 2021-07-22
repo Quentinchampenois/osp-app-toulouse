@@ -55,8 +55,11 @@ module Decidim
     def registration_metadata
       {
         additional_tos: form.additional_tos,
-        residential_area: form.residential_area,
-        work_area: form.work_area,
+        living_area: form.living_area,
+        city_residential_area: city_living_area? ? form.city_residential_area : nil,
+        city_work_area: city_living_area? ? form.city_work_area : nil,
+        metropolis_residential_area: metropolis_living_area? ? form.metropolis_residential_area : nil,
+        metropolis_work_area: metropolis_living_area? ? form.metropolis_work_area : nil,
         gender: form.gender,
         birth_date: form.birth_date,
         statutory_representative_email: form.statutory_representative_email
@@ -71,6 +74,14 @@ module Decidim
       return if registration_metadata[:statutory_representative_email].blank?
 
       Decidim::StatutoryRepresentativeMailer.inform(@user).deliver_later
+    end
+
+    def city_living_area?
+      form.living_area == "city"
+    end
+
+    def metropolis_living_area?
+      form.living_area == "metropolis"
     end
   end
 end

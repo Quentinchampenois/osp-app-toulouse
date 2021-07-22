@@ -39,14 +39,39 @@ module Decidim
         answer_option = singlechoice_answer_options.first
         create :answer_choice, answer: singlechoice_answer, answer_option: answer_option, body: answer_option.body[I18n.locale.to_s], custom_body: "Free text"
       end
-      let(:work_area) { create(:scope, organization: questionable.organization) }
-      let(:residential_area) { create(:scope, organization: questionable.organization) }
+      let!(:city_parent_scope) do
+        create(:scope,
+               name: {
+                 fr: "Ville de Toulouse",
+                 en: "Toulouse city"
+               },
+               organization: questionable.organization)
+      end
+      let!(:metropolis_parent_scope) do
+        create(:scope,
+               name: {
+                 fr: "Métropole de Toulouse",
+                 en: "Toulouse metropolis"
+               },
+               organization: questionable.organization)
+      end
+
+      let!(:city_residential_area) { create(:scope, parent: city_parent_scope) }
+      let!(:city_work_area) { create(:scope, parent: city_parent_scope) }
+      let!(:metropolis_residential_area) { create(:scope, parent: metropolis_parent_scope) }
+      let!(:metropolis_work_area) { create(:scope, parent: metropolis_parent_scope) }
+
+      let(:living_area) { "city" }
+
       let(:registration_metadata) do
         {
           birth_date: "1981",
           gender: "Female",
-          work_area: work_area.id,
-          residential_area: residential_area.id,
+          living_area: living_area,
+          city_work_area: city_work_area.id,
+          city_residential_area: city_residential_area.id,
+          metropolis_residential_area: metropolis_residential_area.id,
+          metropolis_work_area: metropolis_work_area.id,
           statutory_representative_email: "statutory_representative_email@example.org"
         }
       end
@@ -90,8 +115,10 @@ module Decidim
           expect(serialized["Email"]).to eq(nil)
           expect(serialized["Birth date"]).to eq(nil)
           expect(serialized["Gender"]).to eq(nil)
-          expect(serialized["Work area"]).to eq(nil)
-          expect(serialized["Residential area"]).to eq(nil)
+          expect(serialized["City work area"]).to eq(nil)
+          expect(serialized["City residential area"]).to eq(nil)
+          expect(serialized["Metropolis work area"]).to eq(nil)
+          expect(serialized["Metropolis residential area"]).to eq(nil)
           expect(serialized["Statutory representative email"]).to eq(nil)
         end
 
@@ -102,17 +129,64 @@ module Decidim
 
           let(:serialized) { subject.serialize }
 
-          it "serializes user data" do
-            user.update!(registration_metadata: registration_metadata)
+          context "when living_area is city" do
+            it "serializes user data" do
+              user.update!(registration_metadata: registration_metadata)
 
-            expect(serialized["Username"]).to eq(user.name)
-            expect(serialized["Nickname"]).to eq(user.nickname)
-            expect(serialized["Email"]).to eq(user.email)
-            expect(serialized["Gender"]).to eq(registration_metadata[:gender])
-            expect(serialized["Work area"]).to eq(translated(work_area.name))
-            expect(serialized["Residential area"]).to eq(translated(residential_area.name))
-            expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
-            expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+              expect(serialized["Username"]).to eq(user.name)
+              expect(serialized["Nickname"]).to eq(user.nickname)
+              expect(serialized["Email"]).to eq(user.email)
+              expect(serialized["Gender"]).to eq(registration_metadata[:gender])
+              expect(serialized["Living area"]).to eq(registration_metadata[:living_area])
+              expect(serialized["City work area"]).to eq(translated(city_work_area.name))
+              expect(serialized["City residential area"]).to eq(translated(city_residential_area.name))
+              expect(serialized["Metropolis work area"]).to eq("")
+              expect(serialized["Metropolis residential area"]).to eq("")
+              expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
+              expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+            end
+          end
+
+          context "when living_area is metropolis" do
+            let(:living_area) { "metropolis" }
+
+            it "serializes user data" do
+              user.update!(registration_metadata: registration_metadata)
+
+              expect(serialized["Username"]).to eq(user.name)
+              expect(serialized["Nickname"]).to eq(user.nickname)
+              expect(serialized["Email"]).to eq(user.email)
+              expect(serialized["Gender"]).to eq(registration_metadata[:gender])
+              expect(serialized["Living area"]).to eq(registration_metadata[:living_area])
+              expect(serialized["City work area"]).to eq("")
+              expect(serialized["City residential area"]).to eq("")
+              expect(serialized["Metropolis work area"]).to eq(translated(metropolis_work_area.name))
+              expect(serialized["Metropolis residential area"]).to eq(translated(metropolis_residential_area.name))
+              expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
+              expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+            end
+          end
+
+          context "when living_area is other" do
+            let(:living_area) { "other" }
+
+            it "serializes user data" do
+              user.update!(registration_metadata: registration_metadata)
+
+              expect(serialized["Username"]).to eq(user.name)
+              expect(serialized["Nickname"]).to eq(user.nickname)
+              expect(serialized["Email"]).to eq(user.email)
+              expect(serialized["Gender"]).to eq(registration_metadata[:gender])
+              expect(serialized["Living area"]).to eq(registration_metadata[:living_area])
+              expect(serialized["City work area"]).to eq("")
+              expect(serialized["City residential area"]).to eq("")
+              expect(serialized["Metropolis work area"]).to eq("")
+              expect(serialized["Metropolis residential area"]).to eq("")
+              expect(serialized["Work area"]).not_to eq(translated(metropolis_work_area.name))
+              expect(serialized["Residential area"]).not_to eq(translated(metropolis_residential_area.name))
+              expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
+              expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+            end
           end
 
           context "when user has no registration metadata" do
@@ -123,8 +197,10 @@ module Decidim
             it "doesn't includes user registration metadata" do
               expect(serialized["Birth date"]).to be_empty
               expect(serialized["Gender"]).to be_empty
-              expect(serialized["Work area"]).to be_empty
-              expect(serialized["Residential area"]).to be_empty
+              expect(serialized["City work area"]).to be_empty
+              expect(serialized["Metropolis work area"]).to be_empty
+              expect(serialized["City residential area"]).to be_empty
+              expect(serialized["Metropolis residential area"]).to be_empty
               expect(serialized["Statutory representative email"]).to be_empty
             end
           end
@@ -135,8 +211,10 @@ module Decidim
             expect(serialized["Email"]).not_to eq(nil)
             expect(serialized["Birth date"]).not_to eq(nil)
             expect(serialized["Gender"]).not_to eq(nil)
-            expect(serialized["Work area"]).not_to eq(nil)
-            expect(serialized["Residential area"]).not_to eq(nil)
+            expect(serialized["City work area"]).not_to eq(nil)
+            expect(serialized["City residential area"]).not_to eq(nil)
+            expect(serialized["Metropolis work area"]).not_to eq(nil)
+            expect(serialized["Metropolis residential area"]).not_to eq(nil)
             expect(serialized["Statutory representative email"]).not_to eq(nil)
           end
         end

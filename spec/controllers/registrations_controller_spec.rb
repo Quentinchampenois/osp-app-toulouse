@@ -10,6 +10,26 @@ module Decidim
     let(:organization) { create(:organization) }
     let(:email) { "test@example.org" }
 
+    let!(:city_parent_scope) do
+      create(:scope,
+             name: {
+               fr: "Ville de Toulouse",
+               en: "Toulouse city"
+             },
+             organization: organization)
+    end
+    let!(:metropolis_parent_scope) do
+      create(:scope,
+             name: {
+               fr: "Métropole de Toulouse",
+               en: "Toulouse metropolis"
+             },
+             organization: organization)
+    end
+
+    let!(:city_residential_area) { create(:scope, parent: city_parent_scope) }
+    let!(:city_work_area) { create(:scope, parent: city_parent_scope) }
+
     before do
       request.env["devise.mapping"] = ::Devise.mappings[:user]
       request.env["decidim.current_organization"] = organization
@@ -27,8 +47,9 @@ module Decidim
             password_confirmation: "rPYWYKQJrXm97b4ytswc",
             tos_agreement: "1",
             additional_tos: "1",
-            residential_area: scope.id.to_s,
-            work_area: scope.id.to_s,
+            living_area: "city",
+            city_residential_area: city_residential_area.id.to_s,
+            city_work_area: city_work_area.id.to_s,
             gender: "other",
             month: "January",
             year: "1992",

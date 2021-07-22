@@ -62,8 +62,8 @@ module ProposalSerializerExtends
           t_column_name(:emails, ".authors") => proposal.authors.collect(&:email).join(","),
           t_column_name(:birth_date, ".authors") => collect_registration_metadata(:birth_date).join(","),
           t_column_name(:gender, ".authors") => collect_registration_metadata(:gender).join(","),
-          t_column_name(:work_area, ".authors") => collect_registration_metadata(:work_area).join(","),
-          t_column_name(:residential_area, ".authors") => collect_registration_metadata(:residential_area).join(","),
+          t_column_name(:city_work_area, ".authors") => collect_registration_metadata(:city_work_area).join(","),
+          t_column_name(:city_residential_area, ".authors") => collect_registration_metadata(:city_residential_area).join(","),
           t_column_name(:statutory_representative_email, ".authors") => collect_registration_metadata(:statutory_representative_email).join(",")
         }
       end
@@ -108,8 +108,8 @@ module ProposalSerializerExtends
         t_column_name(:emails, ".authors") => "",
         t_column_name(:birth_date, ".authors") => "",
         t_column_name(:gender, ".authors") => "",
-        t_column_name(:work_area, ".authors") => "",
-        t_column_name(:residential_area, ".authors") => "",
+        t_column_name(:city_work_area, ".authors") => "",
+        t_column_name(:city_residential_area, ".authors") => "",
         t_column_name(:statutory_representative_email, ".authors") => ""
       }
     else
@@ -155,8 +155,8 @@ module ProposalSerializerExtends
 
   # Private: Define a specific process for a given key
   def check_specific_key(key, value)
-    return scope_area_name(value) if key == :work_area
-    return scope_area_name(value) if key == :residential_area
+    return scope_area_name(value) if key == :city_work_area
+    return scope_area_name(value) if key == :city_residential_area
 
     value
   end

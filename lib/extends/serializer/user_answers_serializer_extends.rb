@@ -19,8 +19,11 @@ module UserAnswersSerializerExtends
           answer_translated_attribute_name(:user_email) => user.try(:email) || "",
           answer_translated_attribute_name(:user_birth_date) => key_from_registration_metadata(user, :birth_date).to_s,
           answer_translated_attribute_name(:user_gender) => key_from_registration_metadata(user, :gender),
-          answer_translated_attribute_name(:user_work_area) => key_from_registration_metadata(user, :work_area),
-          answer_translated_attribute_name(:user_residential_area) => key_from_registration_metadata(user, :residential_area),
+          answer_translated_attribute_name(:user_living_area) => key_from_registration_metadata(user, :living_area),
+          answer_translated_attribute_name(:user_city_residential_area) => city_residential_area(user),
+          answer_translated_attribute_name(:user_city_work_area) => city_work_area(user),
+          answer_translated_attribute_name(:user_metropolis_residential_area) => metropolis_residential_area(user),
+          answer_translated_attribute_name(:user_metropolis_work_area) => metropolis_work_area(user),
           answer_translated_attribute_name(:user_statutory_representative_email) => key_from_registration_metadata(user, :statutory_representative_email)
         )
       end
@@ -36,6 +39,30 @@ module UserAnswersSerializerExtends
   end
 
   private
+
+  def city_residential_area(user)
+    return "" unless key_from_registration_metadata(user, :living_area) == "city"
+
+    key_from_registration_metadata(user, :city_residential_area)
+  end
+
+  def city_work_area(user)
+    return "" unless key_from_registration_metadata(user, :living_area) == "city"
+
+    key_from_registration_metadata(user, :city_work_area)
+  end
+
+  def metropolis_residential_area(user)
+    return "" unless key_from_registration_metadata(user, :living_area) == "metropolis"
+
+    key_from_registration_metadata(user, :metropolis_residential_area)
+  end
+
+  def metropolis_work_area(user)
+    return "" unless key_from_registration_metadata(user, :living_area) == "metropolis"
+
+    key_from_registration_metadata(user, :metropolis_work_area)
+  end
 
   def answer_user(answer)
     return nil if answer.decidim_user_id.blank?

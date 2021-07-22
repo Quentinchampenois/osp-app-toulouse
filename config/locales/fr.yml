@@ -17,6 +17,10 @@ fr:
         create:
           error: Error
           success: Success
+    authorization_handlers:
+      osp_authorization_handler:
+        explanation: Explanation
+        name: OSP authorization handler
     comments:
       exports:
         column_name:
@@ -25,12 +29,12 @@ fr:
             author:
               author: Auteur
               birth_date: Date de naissance
+              city_residential_area: Lieu de résidence
+              city_work_area: Lieu de travail
               gender: Genre
               id: ID
               name: Nom
-              residential_area: Lieu de résidence
               statutory_representative_email: Email representatif
-              work_area: Lieu de travail
             body: Contenu
             commentable_id: Commentable ID
             commentable_type: Commentable type
@@ -69,16 +73,16 @@ fr:
               url: Url
               user:
                 birth_date: Birth date
+                city_residential_area: Residential area
+                city_work_area: Work area
                 email: Email
                 gender: Gender
                 name: Name
                 nickname: Nickname
                 registration_form_answers: Registration form answers
-                residential_area: Residential area
                 statutory_representative_email: Statutory representative email
                 user: User
                 user_group: User group
-                work_area: Work area
     devise:
       registrations:
         new:
@@ -87,6 +91,9 @@ fr:
           already_have_an_account?: Already have an account?
           back: Retour
           birth_date: Date de naissance
+          city: City
+          city_residential_area: Residential area
+          city_work_area: Work area
           complete_profile: Compléter mon profil
           complete_sign_up: Plus que quelques questions...
           complete_sign_up_subtitle: Remplissez ces quelques champs pour finaliser la création de votre compte.
@@ -98,6 +105,10 @@ fr:
             male: Homme
             other: Autre
           gender_label: Genre
+          living_area: Living area
+          metropolis: Metropolis
+          metropolis_residential_area: Metropolis residential area
+          metropolis_work_area: Metropolis work area
           month_label: Mois
           month_name:
             april: Avril
@@ -115,8 +126,8 @@ fr:
           newsletter: Newsletter
           newsletter_title: Newsletter title
           nickname_help: Nickname help
+          other: Other
           password_help: Password help
-          residential_area: Residential area
           sign_in: Sign in
           sign_up: Sign up
           sign_up_as:
@@ -128,7 +139,6 @@ fr:
           tos_title: Terms of Service
           underage: Underage
           username_help: Username help
-          work_area: Work area
           year_label: Year label
       shared:
         omniauth_buttons:
@@ -141,14 +151,17 @@ fr:
         registered: Registered
         unregistered: Unregistered
         user_birth_date: Birth date
+        user_city_residential_area: Residential area
+        user_city_work_area: Work area
         user_email: Email
         user_gender: Gender
+        user_living_area: Living area
+        user_metropolis_residential_area: Residential area
+        user_metropolis_work_area: Work area
         user_name: Username
         user_nickname: Nickname
-        user_residential_area: Residential area
         user_status: User status
         user_statutory_representative_email: Statutory representative email
-        user_work_area: Work area
     meetings:
       admin:
         exports:
@@ -158,16 +171,16 @@ fr:
               id: ID
               user:
                 birth_date: Birth date
+                city_residential_area: Residential area
+                city_work_area: Work area
                 email: Email
                 gender: Gender
                 name: Name
                 nickname: Nickname
                 registration_form_answers: Registration form answers
-                residential_area: Residential area
                 statutory_representative_email: Statutory representative email
                 user: User
                 user_group: User group
-                work_area: Work area
     participatory_processes:
       admin:
         participatory_processes:
@@ -199,6 +212,8 @@ fr:
     proposals:
       admin:
         exports:
+          city_residential_area: Dans quel quartier habitez-vous ?
+          city_work_area: Dans quel quartier travaillez-vous ?
           column_name:
             proposals:
               amendments: Amendments
@@ -208,13 +223,13 @@ fr:
               authors:
                 authors: Authors
                 birth_date: Birth date
+                city_residential_area: Residential area
+                city_work_area: Work area
                 emails: Emails
                 gender: Gender
                 names: Names
                 nicknames: Nicknames
-                residential_area: Residential area
                 statutory_representative_email: Statutory representative email
-                work_area: Work area
               body: Content
               category:
                 category: Category
@@ -248,7 +263,6 @@ fr:
           newsletter_title: Recevoir les actualités de la plateforme
           nickname_help: Cet identifiant est public et unique sur la plateforme "%{organization}" ; il permet aux autres utilisateurs de vous suivre, de vous contacter ou de vous mentionner dans leurs commentaires. Il s’affichera précédé d’un « @ » ; il ne doit pas contenir d’espace ni de caractère spécial.
           password_help: "%{minimun_characters} caractères minimum, ne doit pas être trop commun (ex. 123456) et doit être différent de votre pseudonyme et de votre email."
-          residential_area: Dans quel quartier habitez-vous ?
           sign_in: S'identifier
           sign_up: S'inscrire
           sign_up_as:
@@ -261,7 +275,6 @@ fr:
           tos_title: Conditions d'utilisation
           underage: J’ai moins de 15 ans, mon parent ou mon représentant légal m’autorise à m’inscrire.
           username_help: Le nom est public et apparaît dans votre profil et sur vos messages. Dans le but de garantir l'anonymat, vous pouvez choisir n'importe quel nom.
-          work_area: Dans quel quartier travaillez-vous ?
           year_label: Année
     statutory_representative:
       inform:
@@ -277,6 +290,21 @@ fr:
         select_your_interests: Cliquez sur les curseurs et recevez des notifications personnalisées
         skip: Passer cette étape
         welcome: Bienvenue !
+    verifications:
+      sms:
+        authorizations:
+          edit:
+            confirm_destroy: Confirmer
+            resend: Renvoyer un SMS
+            send: Authentifier mon compte
+            title: Vérifier votre identité avec la méthode de vérification par SMS
+            verification_code: Code de vérification
+          new:
+            instructions: Renseignez votre numéro de téléphone puis le code de vérification transmis par SMS. Cette méthode nous permet de nous assurer que vous avez bien voté une seule fois.
+            instructions_helper: "<ul><li>Ne doit contenir que des chiffres</li><li>Doit commencer par 0</li><li>Doit contenir 10 chiffres</li><li>Ne doit pas être utilisé par un autre compte sur cette plateforme</li></ul>"
+            mobile_phone_number: Votre numéro de téléphone mobile
+            send: Envoyer un SMS
+            title: Vérifier votre identité avec la méthode de vérification par SMS
   devise:
     failure:
       invited: Invited
@@ -326,3 +354,5 @@ fr:
         account: Account
         conversations: Conversations
         notifications: Notifications
+  sms_verification_workflow:
+    message: Bonjour, %{code} est le code pour vous authentifier sur la plateforme jeparticipe.toulouse.fr
