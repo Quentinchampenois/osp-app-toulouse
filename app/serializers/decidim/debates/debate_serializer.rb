@@ -60,6 +60,7 @@ module Decidim
               t_column_name(:nickname, ".user") => debate.author.try(:nickname),
               t_column_name(:email, ".user") => debate.author.try(:email),
               t_column_name(:birth_date, ".user") => key_from_registration_metadata(debate.author, :birth_date).to_s,
+              t_column_name(:age_scope, ".user") => age_scope(key_from_registration_metadata(debate.author, :birth_date).to_s),
               t_column_name(:gender, ".user") => key_from_registration_metadata(debate.author, :gender),
               t_column_name(:city_work_area, ".user") => key_from_registration_metadata(debate.author, :city_work_area),
               t_column_name(:city_residential_area, ".user") => key_from_registration_metadata(debate.author, :city_residential_area),

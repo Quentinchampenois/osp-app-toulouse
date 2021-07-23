@@ -10,6 +10,7 @@ module CommentSerializerExtends
         t_column_name(:id, ".author") => resource.author.id,
         t_column_name(:name, ".author") => resource.author.name,
         t_column_name(:birth_date, ".author") => key_from_registration_metadata(resource.author, :birth_date).to_s,
+        t_column_name(:age_scope, ".author") => age_scope(key_from_registration_metadata(resource.author, :birth_date).to_s),
         t_column_name(:gender, ".author") => key_from_registration_metadata(resource.author, :gender),
         t_column_name(:city_work_area, ".author") => key_from_registration_metadata(resource.author, :city_work_area),
         t_column_name(:city_residential_area, ".author") => key_from_registration_metadata(resource.author, :city_residential_area),

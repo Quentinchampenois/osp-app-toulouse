@@ -27,6 +27,7 @@ fr:
           comments:
             alignment: Alignement
             author:
+              age_scope: Tranche d'âge
               author: Auteur
               birth_date: Date de naissance
               city_residential_area: Lieu de résidence
@@ -72,6 +73,7 @@ fr:
               title: title
               url: Url
               user:
+                age_scope: Tranche d'âge
                 birth_date: Birth date
                 city_residential_area: Residential area
                 city_work_area: Work area
@@ -150,6 +152,7 @@ fr:
         ip_hash: Ip Hash
         registered: Registered
         unregistered: Unregistered
+        user_age_scope: Tranche d'âge
         user_birth_date: Birth date
         user_city_residential_area: Residential area
         user_city_work_area: Work area
@@ -334,6 +337,11 @@ fr:
         period: Period
     name:
       suffix: Suffix
+  global:
+    age:
+      between: De %{from} à %{to} ans
+      greater_than: Plus de %{age} ans
+      lower_than: Moins de %{age} ans
   layouts:
     decidim:
       footer:

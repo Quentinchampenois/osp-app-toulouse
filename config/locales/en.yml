@@ -27,6 +27,7 @@ en:
           comments:
             alignment: Alignment
             author:
+              age_scope: Age scope
               author: Author
               birth_date: Birth date
               city_residential_area: Residential area
@@ -72,6 +73,7 @@ en:
               title: title
               url: Url
               user:
+                age_scope: Age scope
                 birth_date: Birth date
                 city_residential_area: Residential area
                 city_work_area: Work area
@@ -150,6 +152,7 @@ en:
         ip_hash: Ip Hash
         registered: Registered
         unregistered: Unregistered
+        user_age_scope: Age scope
         user_birth_date: Birth date
         user_city_residential_area: City residential area
         user_city_work_area: City work area
@@ -331,6 +334,11 @@ en:
       punctuation:
         period: Period
         space: Space
+  global:
+    age:
+      between: From %{from} to %{to} years old
+      greater_than: More than %{age} years old
+      lower_than: Less than %{age} years old
   layouts:
     decidim:
       footer:

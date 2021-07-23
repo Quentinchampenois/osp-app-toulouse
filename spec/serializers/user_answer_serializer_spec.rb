@@ -65,7 +65,7 @@ module Decidim
 
       let(:registration_metadata) do
         {
-          birth_date: "1981",
+          birth_date: "1995",
           gender: "Female",
           living_area: living_area,
           city_work_area: city_work_area.id,
@@ -127,6 +127,10 @@ module Decidim
             described_class.new(questionnaire.answers, true)
           end
 
+          before do
+            allow(Time.zone.now).to receive(:year).and_return("2021")
+          end
+
           let(:serialized) { subject.serialize }
 
           context "when living_area is city" do
@@ -144,6 +148,7 @@ module Decidim
               expect(serialized["Metropolis residential area"]).to eq("")
               expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
               expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+              expect(serialized["Age scope"]).to eq("From 25 to 39 years old") 
             end
           end
 
@@ -164,6 +169,7 @@ module Decidim
               expect(serialized["Metropolis residential area"]).to eq(translated(metropolis_residential_area.name))
               expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
               expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+              expect(serialized["Age scope"]).to eq("From 25 to 39 years old")
             end
           end
 
@@ -186,6 +192,7 @@ module Decidim
               expect(serialized["Residential area"]).not_to eq(translated(metropolis_residential_area.name))
               expect(serialized["Statutory representative email"]).to eq(registration_metadata[:statutory_representative_email])
               expect(serialized["Birth date"]).to eq(registration_metadata[:birth_date])
+              expect(serialized["Age scope"]).to eq("From 25 to 39 years old")
             end
           end
 

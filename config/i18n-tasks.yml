@@ -97,6 +97,7 @@ ignore_missing:
  - layouts.decidim.user_menu.profile
  - faker.*
  - decidim.statutory_representative.inform.*
+ - .global.age.*
  - decidim.admin.actions.*
  - decidim.admin.titles.*
  - decidim.admin.models.scope_type.fields.*
@@ -119,4 +120,4 @@ ignore_unused:
   - faker.*
   - layouts.decidim.participatory_process_groups.participatory_process_group.processes_count
   - decidim.participatory_processes.emitter.values.*
-
+  - global.age.*

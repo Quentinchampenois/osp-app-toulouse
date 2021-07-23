@@ -18,6 +18,7 @@ module UserAnswersSerializerExtends
           answer_translated_attribute_name(:user_nickname) => user.try(:nickname) || "",
           answer_translated_attribute_name(:user_email) => user.try(:email) || "",
           answer_translated_attribute_name(:user_birth_date) => key_from_registration_metadata(user, :birth_date).to_s,
+          answer_translated_attribute_name(:user_age_scope) => age_scope(key_from_registration_metadata(user, :birth_date).to_s),
           answer_translated_attribute_name(:user_gender) => key_from_registration_metadata(user, :gender),
           answer_translated_attribute_name(:user_living_area) => key_from_registration_metadata(user, :living_area),
           answer_translated_attribute_name(:user_city_residential_area) => city_residential_area(user),

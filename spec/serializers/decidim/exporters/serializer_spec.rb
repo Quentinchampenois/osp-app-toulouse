@@ -76,5 +76,59 @@ module Decidim
         end
       end
     end
+
+    describe "#age_scope" do
+      before do
+        allow(Time.zone.now).to receive(:year).and_return("2021")
+      end
+
+      context "when age is nil" do
+        let(:age) { nil }
+
+        it "returns empty string" do
+          expect(subject.send(:age_scope, age)).to be_empty
+        end
+      end
+
+      context "when age is 15 years old" do
+        let(:age) { "2006" }
+
+        it "serializes user data" do
+          expect(subject.send(:age_scope, age)).to eq("Less than 18 years old")
+        end
+      end
+
+      context "when age is 20 years old" do
+        let(:age) { "2001" }
+
+        it "serializes user data" do
+          expect(subject.send(:age_scope, age)).to eq("From 18 to 24 years old")
+        end
+      end
+
+      context "when age is 30 years old" do
+        let(:age) { "1991" }
+
+        it "serializes user data" do
+          expect(subject.send(:age_scope, age)).to eq("From 25 to 39 years old")
+        end
+      end
+
+      context "when age is 40 years old" do
+        let(:age) { "1981" }
+
+        it "serializes user data" do
+          expect(subject.send(:age_scope, age)).to eq("From 40 to 65 years old")
+        end
+      end
+
+      context "when age is 68 years old" do
+        let(:age) { "1953" }
+
+        it "serializes user data" do
+          expect(subject.send(:age_scope, age)).to eq("More than 65 years old")
+        end
+      end
+    end
   end
 end
